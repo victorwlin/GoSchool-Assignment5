@@ -10,7 +10,7 @@ Connecting MySQL container with local MySQL client
 `$ mysql -P 32769 --protocol=tcp -u root -p`
 
 Create and use database  
-`mysql> create database kit_db;`
+`mysql> create database kit_db;`  
 `mysql> use kit_db;`
 
 Create table
