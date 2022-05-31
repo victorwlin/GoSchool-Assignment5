@@ -3,13 +3,13 @@ This assignment is for the Go Microservices 1 module in the GoSchool curriculum.
 ### Database
 The database is a MySQL database running in a Docker container. I took the following steps to create it.
 
-Create MySQL container
+Create MySQL container  
 `$ docker run --name kit_db -p 32769:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:latest`
 
-Connecting MySQL container with local MySQL client
+Connecting MySQL container with local MySQL client  
 `$ mysql -P 32769 --protocol=tcp -u root -p`
 
-Create and use database
+Create and use database  
 `mysql> create database kit_db;`
 `mysql> use kit_db;`
 
@@ -17,11 +17,11 @@ Create table
 
 	mysql> CREATE TABLE victor (`friend_name` VARCHAR(30) NOT NULL PRIMARY KEY, `group` VARCHAR(30), `desired_freq` INT, `last_contact` DATE);
 
-Insert row
-`mysql> INSERT INTO victor VALUES ('Jimmy', 'US', 30, '2022-05-23');`
-`mysql> INSERT INTO victor VALUES ('Ben', 'US', 60, '2022-04-09');`
-`mysql> INSERT INTO victor VALUES ('Iggy', 'SG', 14, '2022-05-20');`
-`mysql> INSERT INTO victor VALUES ('Arjun', 'SG', 60, '2022-05-22');`
+Insert row  
+`mysql> INSERT INTO victor VALUES ('Jimmy', 'US', 30, '2022-05-23');`  
+`mysql> INSERT INTO victor VALUES ('Ben', 'US', 60, '2022-04-09');`  
+`mysql> INSERT INTO victor VALUES ('Iggy', 'SG', 14, '2022-05-20');`  
+`mysql> INSERT INTO victor VALUES ('Arjun', 'SG', 60, '2022-05-22');`  
 
 ### REST API
 The REST API allows the client to pull data on friends from the following URLs.
