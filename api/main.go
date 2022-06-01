@@ -7,10 +7,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 type friend struct {
@@ -22,7 +24,32 @@ type friend struct {
 
 const connection string = "root:password@tcp(localhost:32769)/kit_db"
 
+var (
+	envErr = godotenv.Load(".env")
+	lock   = os.Getenv("LOCK")
+)
+
+func auth(r *http.Request) bool {
+	queries := r.URL.Query()
+
+	if key, exists := queries["key"]; exists {
+		if key[0] == lock {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return false
+	}
+}
+
 func getFriends(w http.ResponseWriter, r *http.Request) {
+	if !auth(r) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("401 - Invalid Key"))
+		return
+	}
+
 	// establish connection to database
 	db, err := sql.Open("mysql", connection)
 	if err != nil {
@@ -54,6 +81,12 @@ func getFriends(w http.ResponseWriter, r *http.Request) {
 }
 
 func friendFunc(w http.ResponseWriter, r *http.Request) {
+	if !auth(r) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("401 - Invalid Key"))
+		return
+	}
+
 	params := mux.Vars(r)
 	friendParam := params["friend"]
 
@@ -97,7 +130,7 @@ func friendFunc(w http.ResponseWriter, r *http.Request) {
 		// check if friend exists
 		if friendExists(db, friendParam) {
 			query := fmt.Sprintf("DELETE FROM kit_db.victor WHERE friend_name='%s'", friendParam)
-			fmt.Println(query)
+
 			_, err := db.Query(query)
 			if err != nil {
 				panic(err.Error())

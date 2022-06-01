@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type friend struct {
@@ -21,8 +24,13 @@ type friends struct {
 
 const baseURL string = "http://localhost:5000/api/v1/friends"
 
+var (
+	envErr = godotenv.Load(".env")
+	key    = os.Getenv("KEY")
+)
+
 func getFriends() (friends friends) {
-	response, err := http.Get(baseURL)
+	response, err := http.Get(baseURL + "?key=" + key)
 
 	if err == nil {
 		data, err := ioutil.ReadAll(response.Body)
@@ -41,7 +49,7 @@ func getFriends() (friends friends) {
 }
 
 func getFriend(friendName string) (friends friends) {
-	response, err := http.Get(baseURL + "/" + friendName)
+	response, err := http.Get(baseURL + "/" + friendName + "?key=" + key)
 
 	if err == nil {
 		data, err := ioutil.ReadAll(response.Body)
@@ -66,7 +74,7 @@ func addFriendAPI(friend friend) (res int) {
 	}
 	jsonFriend := bytes.NewBuffer(byteFriend)
 
-	response, err := http.Post(baseURL+"/"+friend.FriendName, "application/json", jsonFriend)
+	response, err := http.Post(baseURL+"/"+friend.FriendName+"?key="+key, "application/json", jsonFriend)
 
 	if err == nil {
 		data, err := ioutil.ReadAll(response.Body)
@@ -92,7 +100,7 @@ func editFriendAPI(friend friend) (res int) {
 	}
 	jsonFriend := bytes.NewBuffer(byteFriend)
 
-	request, err := http.NewRequest(http.MethodPut, baseURL+"/"+friend.FriendName, jsonFriend)
+	request, err := http.NewRequest(http.MethodPut, baseURL+"/"+friend.FriendName+"?key="+key, jsonFriend)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -123,7 +131,7 @@ func editFriendAPI(friend friend) (res int) {
 
 func deleteFriendAPI(friend friend) (res int) {
 
-	request, err := http.NewRequest(http.MethodDelete, baseURL+"/"+friend.FriendName, nil)
+	request, err := http.NewRequest(http.MethodDelete, baseURL+"/"+friend.FriendName+"?key="+key, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
