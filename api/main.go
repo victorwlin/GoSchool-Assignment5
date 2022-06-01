@@ -20,7 +20,7 @@ type friend struct {
 	LastContact string `json:"LastContact"`
 }
 
-const connection string = "root:password@tcp(127.0.0.1:32769)/kit_db"
+const connection string = "root:password@tcp(localhost:32769)/kit_db"
 
 func getFriends(w http.ResponseWriter, r *http.Request) {
 	// establish connection to database
