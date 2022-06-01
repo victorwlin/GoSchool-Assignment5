@@ -32,7 +32,7 @@ The REST API allows the client to pull data on friends from the following URLs.
 	- PUT - Updates details for one friends
 	- DELETE - Deletes a friend
 
-Various response codes are used to communicate the status of the request.
+Various response codes are used to communicate the status of the request, and the API is secured by a key that only the client has.
 
 ### Client
 The client is a simplified version of previous assignments. There are now five paths to interact with the API.
@@ -43,10 +43,15 @@ The client is a simplified version of previous assignments. There are now five p
 - "deletefriend/" - Deletes friend by making a DELETE request to the API
 
 ### Setup Guide
-1. Follow the steps in the Database section to set up your own MySQL container with a table. (Pay particular attention to the external port as the app requires the use of 32769 to run.)
-2. Go into the api folder and use `go run .` to start the REST API
-3. Go into the client folder and use `go run .` to star the client
-4. Open your browser and go to [localhost:5221/](localhost:5221/) to use the client
+1. Navigate to the `db` directory with the `Dockerfile` and `sql-scripts` sub-folder.
+2. While in the `db` directory, build a customized `mysql` image by running `$ docker build -t kit_db`.
+(Please note that I have tested this image, and it appears to work, but if it doesn't, you can also follow the steps in the Database section to create your own database with some initial data.)
+3. Run the new image with the following command: `$ docker run --name kit_db -p 32769:3306 -e MYSQL_ROOT_PASSWORD=password -d kit_db`
+(Pay particular attention to the external port as the app requires the use of 32769 to run.)
+4. Go into the `api` folder and use `go run .` to start the REST API
+5. Go into the `client` folder and use `go run .` to start the client
+(Both the `api` and `client` folders have Dockerfiles, and it's possible to build an image and run them as containers. However container networking does take some manual configuration of the container network.)
+7. Open your browser and go to [localhost:5221/](localhost:5221/) to use the client
 
 ### Testing Guide
 1. When you navigate to [localhost:5221/](localhost:5221/), a GET request is made to the API to fetch data on all friends in the database. Check to make sure all the friends and information is identical to what you entered in the database during setup.
