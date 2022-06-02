@@ -1,5 +1,8 @@
 This assignment is for the Go Microservices 1 module in the GoSchool curriculum. It is a continuation of earlier assignments and is focused on building a microservice, utilizing containers, and accessing databases.
 
+Live Client: http://kit-client.herokuapp.com/  
+Live API (requires key to access): https://kit-api.herokuapp.com/api/v1/friends
+
 ### Database
 The database is a MySQL database running in a Docker container. I took the following steps to create it.
 
