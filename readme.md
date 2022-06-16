@@ -47,7 +47,7 @@ The client is a simplified version of previous assignments. There are now five p
 
 ### Setup Guide
 1. Navigate to the `db` directory with the `Dockerfile` and `sql-scripts` sub-folder.
-2. While in the `db` directory, build a customized `mysql` image by running `$ docker build -t kit_db`.
+2. While in the `db` directory, build a customized `mysql` image by running `$ docker build -t kit_db .`.
 (Please note that I have tested this image, and it appears to work, but if it doesn't, you can also follow the steps in the Database section to create your own database with some initial data.)
 3. Run the new image with the following command: `$ docker run --name kit_db -p 32769:3306 -e MYSQL_ROOT_PASSWORD=password -d kit_db`
 (Pay particular attention to the external port as the app requires the use of 32769 to run.)
